@@ -1,22 +1,83 @@
-import React from 'react';
+
+import React, { Component } from 'react';
 import ContactCinci from '../images/smale-park.png';
+import axios from 'axios';
 
 
-const Contact = () => {
-  return (
-<div className='container'>
+class Contact extends Component {
+  constructor(props) {
+      super(props);
+      this.onChangeName = this.onChangeName.bind(this)
+      this.onChangeEmail = this.onChangeEmail.bind(this)
+      this.onChangeMessage = this.onChangeMessage.bind(this)
+      this.onSubmit = this.onSubmit.bind(this);
+
+      this.state = {
+          name: '',
+          email: '',
+          message: '',
+      }
+  }
+
+  onChangeName(e){
+    this.setState({
+      name: e.target.value
+    })
+  }
+  onChangeEmail(e){
+    this.setState({
+      email: e.target.value
+    })
+  }
+  onChangeMessage(e){
+    this.setState({
+      message: e.target.value
+    })
+  }
+
+
+
+  onSubmit(e) {
+      e.preventDefault();
+
+      const contact = {
+          name: this.state.name,
+          email: this.state.email,
+          message: this.state.contact,
+      }
+
+      console.log(contact);
+
+      axios.post('http://localhost:5000/contact/add', contact)
+      .then(res => console.log(res.data));
+
+      this.setState({
+          name: '',
+          email: '',
+          name: ''
+      })
+          window.alert('Thanks for reaching out');
+          console.log(contact);
+   
+  }
+
+  render(){
+    return (
+      <div className='container'>
 
 <div className=''>
 <img className="contact-image" src={ContactCinci} alt=""/>
 </div>              
 
 <h1 className='margin-contact'>Contact us today!</h1>
-<form action="https://formsubmit.co/devilbets666@gmail.com" method="POST">
-     <input type="text" name="name" placeholder="Name" required/>
-     <input type="email" name="email" placeholder="Email" required/>
-     <input type="text" name="message" placeholder="Your message..." required/>
+<form action="https://formsubmit.co/devilbets666@gmail.com" onSubmit={this.onSubmit}>
+     <input type="text" name="name" placeholder="Name" onChange={this.onChangeName} required/>
+     <input type="email" name="email" placeholder="Email" onChage={this.onChangeEmail} required/>
+     <input type="text" name="message" placeholder="Your message..." onChange={this.onChangeMessage} required/>
      <button className='btn-primary' type="submit">Send</button>
 </form>
+
+
 
 <div className='margin-icon'>
 
@@ -55,8 +116,11 @@ const Contact = () => {
  
 </div>
 
+    )
+  }
 
-  )
+
+
 };
 
 export default Contact;
